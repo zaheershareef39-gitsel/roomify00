@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router";
 const Navbar = () => {
     const { isSignedIn, userName, signIn, signOut } = useOutletContext<AuthContext>();
     const handleAuthClick = async () => {
+        console.log("Auth button clicked!");
         if (isSignedIn) {
             try {
                 await signOut();
