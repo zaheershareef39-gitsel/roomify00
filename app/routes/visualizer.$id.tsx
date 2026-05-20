@@ -162,10 +162,10 @@ const VisualizerId = () => {
                             >
                                 <Download className="w-4 h-4 mr-2" /> Export
                             </Button>
-                            <Button size="sm" onClick={() => { }} className="share">
+                            {/* <Button size="sm" onClick={() => { }} className="share">
                                 <Share2 className="w-4 h-4 mr-2" />
                                 Share
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                     <div className={`render-area ${isProcessing ? 'is-processing' : ''}`}>

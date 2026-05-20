@@ -79,7 +79,6 @@ export default function Home() {
       <p className="subtitle"> Roomify is an AI-first design environment that helps you visualize, render, and ship architectural projects faster than ever.</p>
       <div className="actions">
         <a href="#upload" className='cta'>Start Building <ArrowRight className="icon" /></a>
-        <Button variant="outline" size="lg" className="demo">Watch Demo</Button>
       </div>
       <div id="upload" className="upload-shell">
         <div className="grid-overlay" />
