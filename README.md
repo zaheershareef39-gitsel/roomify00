@@ -34,6 +34,22 @@ npm run dev
 
 Your application will be available at `http://localhost:5173`.
 
+### Environment Variables
+
+Create a local env file from the example:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Then update the placeholder value in `.env.local` with your own Puter worker URL:
+
+```env
+VITE_PUTER_WORKER_URL=https://your-puter-worker-subdomain.puter.work
+```
+
+This file is ignored by git so local secrets are not committed.
+
 ## Building for Production
 
 Create a production build:
