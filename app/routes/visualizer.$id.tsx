@@ -4,6 +4,7 @@ import { generate3DView } from '../../lib/ai.action';
 import { Button } from '../../components/ui/button';
 import { Box, Download, RefreshCcw, Share2, X } from 'lucide-react';
 import { createProject, getProjectById } from '../../lib/puter.action';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 const VisualizerId = () => {
     const { id } = useParams();
@@ -16,6 +17,39 @@ const VisualizerId = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [currentImage, setCurrentImage] = useState<string | null>(null);
     const handleBack = () => navigate('/');
+
+    const handleExport = async () => {
+        if (!currentImage) return;
+
+        const filename = `${project?.name?.replace(/\s+/g, '_') || `roomify-${id}`}.png`;
+
+        try {
+            if (currentImage.startsWith('data:')) {
+                const anchor = document.createElement('a');
+                anchor.href = currentImage;
+                anchor.download = filename;
+                anchor.click();
+                return;
+            }
+
+            const response = await fetch(currentImage);
+            if (!response.ok) {
+                throw new Error('Failed to fetch image for download');
+            }
+
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = blobUrl;
+            anchor.download = filename;
+            document.body.appendChild(anchor);
+            anchor.click();
+            anchor.remove();
+            URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            console.error('Export failed:', error);
+        }
+    };
 
     const runGeneration = async (item: DesignItem) => {
         if (!id || !item.sourceImage) return;
@@ -122,7 +156,7 @@ const VisualizerId = () => {
                         <div className="panel-actions">
                             <Button
                                 size="sm"
-                                onClick={() => { }}
+                                onClick={handleExport}
                                 className="export"
                                 disabled={!currentImage}
                             >
@@ -151,6 +185,36 @@ const VisualizerId = () => {
                                     <span className="title">Rendering...</span>
                                     <span className="subtitle">Generating your 3D visualization</span>
                                 </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="panel compare">
+                    <div className="panel-header">
+                        <div className="panel-meta">
+                            <p>Comparison</p>
+                            <h3>Before and After</h3>
+                        </div>
+                        <div className="hint">Drag to compare</div>
+                    </div>
+
+                    <div className="compare-stage">
+                        {project?.sourceImage && currentImage ? (
+                            <ReactCompareSlider
+                                defaultValue={50}
+                                style={{ width: '100%', height: 'auto' }}
+                                itemOne={
+                                    <ReactCompareSliderImage src={project?.sourceImage} alt="before" className="compare-img" />
+                                }
+                                itemTwo={
+                                    <ReactCompareSliderImage src={currentImage || project?.renderedImage} alt="after" className="compare-img" />
+                                }
+                            />
+                        ) : (
+                            <div className="compare-fallback">
+                                {project?.sourceImage && (
+                                    <img src={project.sourceImage} alt="Before" className="compare-img" />
+                                )}
                             </div>
                         )}
                     </div>

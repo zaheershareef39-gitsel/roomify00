@@ -23,7 +23,7 @@ const Upload = ({ onComplete }: UploadProps = {}) => {
         const reader = new FileReader();
         reader.onload = (e) => {
             const base64Data = e.target?.result as string;
-            
+
             let currentProgress = 0;
             const interval = setInterval(() => {
                 currentProgress += PROGRESS_STEP;
@@ -79,18 +79,18 @@ const Upload = ({ onComplete }: UploadProps = {}) => {
     return (
         <div className='upload'>
             {!file ? (
-                <div 
+                <div
                     className={`dropzone ${isDragging ? 'is-dragging' : ''}`}
                     onDragOver={onDragOver}
                     onDragEnter={onDragEnter}
                     onDragLeave={onDragLeave}
                     onDrop={onDrop}
                 >
-                    <input 
-                        type="file" 
-                        className='drop-input' 
-                        accept=".jpg,.jpeg,.png,.pdf" 
-                        disabled={!isSignedIn} 
+                    <input
+                        type="file"
+                        className='drop-input'
+                        accept=".jpg,.jpeg,.png,.webp"
+                        disabled={!isSignedIn}
                         onChange={onChange}
                     />
                     <div className='drop-content'>
